@@ -1,0 +1,16 @@
+# config.yaml
+metadata:
+  project_name: "High-Fidelity Autonomous Racing"
+  env_id: "AssettoCorsa-Monza1966JuniorCourse-v0"
+
+hyperparameters:
+  learning_rate: 0.0003
+  gamma: 0.99
+  tau: 0.005  # For soft updates in DDPG/SAC
+  buffer_size: 1000000
+  batch_size: 256
+  
+environment:
+  track: "monza1966juniorcourse"
+  car: "bmw_z4_gt3"
+  use_low_dim: True
