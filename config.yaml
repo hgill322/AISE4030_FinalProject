@@ -1,4 +1,4 @@
-# =============================================================================
+  # =============================================================================
 # config.yaml
 # Central configuration for Autonomous Racing with Assetto Corsa + PPO
 # All hyperparameters, environment settings, file paths, and execution modes.
@@ -25,7 +25,7 @@ ppo:
   value_loss_coef: 0.5                  # Value function loss coefficient
   entropy_coef: 0.01                    # Entropy bonus (exploration)
   max_grad_norm: 0.5                    # Gradient clipping threshold
-  n_steps: 2048                         # Rollout steps before each update
+  n_steps: 1024                         # Rollout steps before each update
   n_epochs: 10                          # Optimization epochs per rollout
   batch_size: 64                        # Mini-batch size for PPO update
   normalize_advantages: true
@@ -43,11 +43,11 @@ network:
 # Training Settings
 # ---------------------------------------------------------------------------
 training:
-  total_timesteps: 1_000_000           # Total environment steps
+  total_timesteps: 100_000           # Total environment steps
   eval_interval: 10000                  # Steps between evaluation runs
-  eval_episodes: 5                      # Number of evaluation episodes
-  save_interval: 50000                  # Steps between checkpoint saves
-  log_interval: 2048                    # Steps between log prints
+  eval_episodes: 3                      # Number of evaluation episodes
+  save_interval: 10000                  # Steps between checkpoint saves
+  log_interval: 1024                    # Steps between log prints
   seed: 42
 
 # ---------------------------------------------------------------------------
