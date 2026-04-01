@@ -60,7 +60,7 @@ class PPOAgent:
         self.device = device
         ppo_cfg  = config["ppo"]
         net_cfg  = config["network"]
-        path_cfg = config["paths"]
+        path_cfg = config["paths"]["ppo"]
 
         self.gamma           = ppo_cfg["gamma"]
         self.gae_lambda      = ppo_cfg["gae_lambda"]
@@ -82,7 +82,7 @@ class PPOAgent:
             obs_dim=obs_dim,
             act_dim=act_dim,
             hidden_dims=net_cfg["hidden_dims"],
-            activation_fn=net_cfg.get("activation", "tanh"),
+            activation_fn=net_cfg.get("activation", "relu"),
         ).to(device)
 
         # Single Adam optimizer covers all network parameters
@@ -250,7 +250,7 @@ class PPOAgent:
         """
         self.entropy_coef = max(0.0, new_coef)
 
-    def decay_entropy_coef(self, decay_factor: float = 0.995) -> None:
+    def decay_entropy_coef(self, decay_factor: float = 0.9998) -> None:
         """
         Multiplies the entropy coefficient by a decay factor for annealing.
 
