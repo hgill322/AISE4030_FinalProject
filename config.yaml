@@ -27,11 +27,11 @@ ppo:
   gae_lambda: 0.95
   clip_epsilon: 0.2
   value_loss_coef: 0.5
-  entropy_coef: 0.015                    # raised from 0.01 - prevents brake-camping
+  entropy_coef: 0.015
   max_grad_norm: 0.5
-  n_steps: 1024                         # raised from 1024 - better GAE estimates
+  n_steps: 1024
   n_epochs: 10
-  batch_size: 64                       # raised from 64
+  batch_size: 64
   normalize_advantages: true
 
 # ---------------------------------------------------------------------------
