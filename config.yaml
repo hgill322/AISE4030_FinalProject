@@ -1,16 +1,96 @@
+# =============================================================================
 # config.yaml
-metadata:
-  project_name: "High-Fidelity Autonomous Racing"
-  env_id: "AssettoCorsa-Monza1966JuniorCourse-v0"
+# Central configuration for Autonomous Racing with Assetto Corsa
+# All hyperparameters, environment settings, file paths, and execution modes.
+# =============================================================================
 
-hyperparameters:
-  learning_rate: 0.0003
-  gamma: 0.99
-  tau: 0.005  # For soft updates in DDPG/SAC
-  buffer_size: 1000000
-  batch_size: 256
-  
+# ---------------------------------------------------------------------------
+# Algorithm Selection  <-- CHANGE THIS to switch between PPO and SAC
+# ---------------------------------------------------------------------------
+algorithm: "sac"    # "ppo" or "sac"
+
+# ---------------------------------------------------------------------------
+# Environment Settings
+# ---------------------------------------------------------------------------
 environment:
-  track: "monza1966juniorcourse"
-  car: "bmw_z4_gt3"
-  use_low_dim: True
+  ac_config_path: "config.yml"
+  work_dir: "output"
+  obs_dim: 125
+  act_dim: 3
+
+# ---------------------------------------------------------------------------
+# PPO Hyperparameters
+# ---------------------------------------------------------------------------
+ppo:
+  learning_rate: 3.0e-4
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_epsilon: 0.2
+  value_loss_coef: 0.5
+  entropy_coef: 0.015
+  max_grad_norm: 0.5
+  n_steps: 1024
+  n_epochs: 10
+  batch_size: 64
+  normalize_advantages: true
+
+# ---------------------------------------------------------------------------
+# SAC Hyperparameters
+# ---------------------------------------------------------------------------
+sac:
+  learning_rate: 3.0e-4
+  gamma: 0.99
+  tau: 0.005                            # soft target update rate (Polyak)
+  batch_size: 128                       # larger batch - off-policy so data is cheap
+  buffer_size: 1_000_000               # replay buffer capacity
+  update_every: 1                       # gradient steps every N env steps
+  updates_per_step: 1                   # gradient steps per update call
+  warmup_steps: 5000                    # random actions before learning starts
+  init_alpha: 0.2                       # initial entropy temperature
+  target_entropy: -3.0                  # -act_dim is a good default; -3 for act_dim=3
+  save_buffer: true                    # save replay buffer to disk on checkpoints (~500MB)
+
+# ---------------------------------------------------------------------------
+# Network Architecture  (shared by both PPO and SAC)
+# ---------------------------------------------------------------------------
+network:
+  hidden_dims: [256, 256]
+  activation: "relu"                    # SAC typically uses relu; tanh also works
+
+# ---------------------------------------------------------------------------
+# Training Settings
+# ---------------------------------------------------------------------------
+training:
+  total_timesteps: 500_000             # raised from 100_000 - needed for racing
+  eval_interval: 50000
+  eval_episodes: 3
+  save_interval: 10000
+  log_interval: 1000
+  seed: 42
+
+# ---------------------------------------------------------------------------
+# File Paths
+# ---------------------------------------------------------------------------
+paths:
+  ppo:
+    results_dir: "ppo_results/"
+    checkpoint_prefix: "ppo_results/checkpoint"
+    best_model_path: "ppo_results/best_model.pt"
+    training_history: "ppo_results/training_history.csv"
+    plots_dir: "ppo_results/plots/"
+  sac:
+    results_dir: "sac_results/"
+    checkpoint_prefix: "sac_results/checkpoint"
+    best_model_path: "sac_results/best_model.pt"
+    training_history: "sac_results/training_history.csv"
+    plots_dir: "sac_results/plots/"
+
+# ---------------------------------------------------------------------------
+# Execution Mode
+# ---------------------------------------------------------------------------
+mode:
+  train: false
+  evaluate: true
+  render: false
+  resume: false
+  resume_path: ""
