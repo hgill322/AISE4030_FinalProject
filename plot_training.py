@@ -37,7 +37,7 @@ def load_config(path: str = "config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
-def rolling(series: pd.Series, window: int = 20) -> pd.Series:
+def rolling(series: pd.Series, window: int = 3) -> pd.Series:
     return series.rolling(window=window, min_periods=1).mean()
 
 

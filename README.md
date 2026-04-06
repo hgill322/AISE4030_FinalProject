@@ -35,6 +35,7 @@ AutonomousRacing/
 ├── plot_training.py     # Standalone plotting script for PPO and SAC CSV logs
 ├── requirements.txt     # Python dependencies
 ├── README.md
+├── _modified_from_gym/  # files from the upstream repo that were modified for our project
 ├── ppo_results/         # PPO checkpoints, training_history.csv, plots/
 └── sac_results/         # SAC checkpoints, training_history.csv, plots/
 ```
